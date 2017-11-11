@@ -1,8 +1,8 @@
 name: bbjs example
 description: Billboardjs example page
 title: bbjs example
-ori_url: 'https://ITE3068.github.io'
-url: 'ITE3068.github.io'
+ori_url: 'https://MaybeS.github.io/ITE3068'
+url: 'blog.maydev.org/ITE3068'
 author: 'Maydev'
 permalink: /posts/:title/
 type: 'blog'
@@ -13,8 +13,8 @@ attach: 'https://raw.githubusercontent.com/MaybeS/MaybeS.github.io/master/assets
 github: 'https://github.com/MaybeS'
 
 paginate: 50
-base: /
-domain_name: 'https://ITE3068.github.io'
+base: 
+domain_name: 'https://blog.maydev.org/ITE3068'
 google_analytics: 'UA-72426393-2'
 disqus_shortname: 'maydev'
 
