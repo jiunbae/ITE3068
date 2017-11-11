@@ -1,0 +1,75 @@
+---
+layout: default
+archive: true
+readmore: true
+---
+
+<link rel="stylesheet" href="{{ site.base }}assets/css/billboard.css">
+<link rel="stylesheet" href="{{ site.base }}assets/css/chart.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.min.js"></script>
+<script src="{{ site.base }}assets/js/billboard.js"></script>
+<script src="{{ site.base }}assets/js/chart.js"></script>
+
+{% include fbcomments.html %}
+<article class="post">
+    <header>
+        <h1>{{ page.title }}</h1>
+        <h2 class="headline">{{ page.date | date:"%B %-d, %Y" }}</h2>
+    </header>
+    <section id="post-body">
+        {{content}}
+    </section>
+</article>
+
+<article class="post" id="reference">
+    <p>여기에는 <a href="https://naver.github.io/billboard.js">billboard.js</a>의 다음과 같은 기능들이 들어가 있습니다.</p>
+
+    <ul>
+    {% for tag in page.tag %}
+        {% assign tags = tag | split: '.' %}
+        <li><a href="https://naver.github.io/billboard.js/demo/#{{ tag }}">
+            {{ tags[1] }}
+        </a></li>
+    {% endfor %}
+    </ul>
+</article>
+
+<footer id="post-meta" class="clearfix">
+    
+    <img class="avatar" src="{{ site.avatar }}">
+    <div>
+        <span class="dark">{{ site.author }}</span>
+        <span>{{ site.description }}</span>
+    </div>
+    
+
+    <section id="sharing">
+        {% include share.html %}
+    </section>
+</footer>
+
+<!-- Disqus comments -->
+{% if site.disqus %}
+    <div class="archive readmore">
+        <h3>Comments</h3>
+        {% include disqus.html %}
+    </div>
+{% endif %}
+
+{% if site.fbcomments %}
+    <hr/>
+    <h4>Comments</h4>
+    <div class="fb-comments" data-href="https://blog.maydev.org/{{ page.url}}" data-width="100%" data-numposts="5"></div>
+{% endif %}
+
+<!-- Archive -->
+{% if layout.readmore %}
+    <ul id="post-list" class="archive readmore">
+        <h3>Read more</h3>
+        {% for post in site.posts %}
+            <li>
+                <a href="{{ post.url }}">{{ post.title }}<aside class="dates">{{ post.date | date:"%b %d" }}</aside></a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
