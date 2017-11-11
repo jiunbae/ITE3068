@@ -1,0 +1,129 @@
+---
+title: 시간별 사고 데이터
+date: 2017-11-10 15:28:00
+description: 2016년 시간별 요일별 사고 데이터
+author: MaybeS
+tag: [Chart.LineChart, Axis.CategoryAxis, Axis.RangeForYAxis, Data.ColumnOrientedData, API.AxisLabel, API.AxisRange]
+target: accident_by_hours
+data: 2016_accident_by_hours
+---
+
+<div id="{{ page.target }}-desc" class="description">
+    {{ site.data[page.data].description }}
+</div>
+
+<div id="{{ page.target }}-data" class="data-list hidden">
+{% for row in site.data[page.data].data %}
+    <div class="data-element"
+    {% for value in row %}
+        data-{{ value[0] }}="{{ value[1] }}"
+    {% endfor %}
+    ></div>
+{% endfor %}
+</div>
+
+<div id="{{ page.target }}" calss="chart"></div>
+<i>이 표는 요일별 사고통계를 나타내고 있습니다.</i>
+
+<hr>
+
+<div id="{{ page.target }}-event" class="chart"></div>
+<i>이 표는 시간별 사고통계를 나타내고 있습니다. 아래의 버튼을 이용해 요일을 선택하세요.</i>
+
+<div class="col-md-3 offset-md-3">
+    <div class="btn-toolbar" role="toolbar">
+        <div class="btn-group mr-2" role="group">
+        {% for day in site.data.raw.weekdays %}
+            <button type="button" id="btn-{{ day }}" data-day="{{ day }}" class="btn btn-secondary btn-week">{{ day }}</button>
+        {% endfor %}
+            <button type="button" id="btn-합" data-day="합" class="btn btn-secondary btn-week">총</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// parse data
+var data = {};
+$(".data-element").each(function (i) {
+    let element = {};
+    for (let cate in $(this).data()) {
+        element[cate] = $(this).data(cate);
+    }
+
+    for (let i in element) {
+        if (i == "value") continue;
+        if (data[i] == undefined) data[i] = {};
+        if (data[i][element[i]] == undefined) data[i][element[i]] = [];
+
+        data[i][element[i]].push(element);
+    }
+});
+
+// set aixs and legend category
+var axis_legend = "cate2";
+var axis_x = "cate1";
+var axis_t = $.grep(Object.keys(data), function(n, i) {
+    return n.startsWith('h');
+}).sort();
+
+// generate chart using billboard.js
+var chart = bb.generate({
+    "data": {
+        "columns": Object.keys(data[axis_legend]).map((e) => [e].concat(
+                        data[axis_legend][e].map((f) => 
+                            axis_t.map((g) => f[g])
+                                  .reduce((sum, value) => sum + value, 1))))
+    }, "axis": {
+        "x": {
+            "type": "category",
+            "categories": Object.keys(data[axis_x]),
+        }
+    },
+    "bindto": "#{{ page.target }}"
+});
+
+var chart_event = bb.generate({
+    "data": {
+        "columns": []
+    }, "axis": {
+        "x": {
+            "type": "category",
+            "categories": axis_t.map((e) => e.slice(1).replace('to', '~')),
+            "label": "시간대",
+        }, "y": {
+            "label": "사건 수",
+            "max": 7000,
+            "min": 0,
+        }
+    },
+    "bindto": "#{{ page.target }}-event"
+})
+
+extract = (from, column, f) => data[from][column].map((e) => f(e));
+
+$(".btn-week").on('click', function(e) {
+    var extracted = [];
+    if (data[axis_x][$(this).data("day")] == undefined) {
+        extracted = Object.keys(data[axis_legend]).map((e) => 
+            [e].concat(axis_t.map((t) => data[axis_legend][e].reduce(function (r, o) {
+                var result = {};
+                    Object.keys(o).forEach((k) => result[k] = r[k] + o[k]);
+                    return result;
+            })[t])));
+        chart_event.axis.max(45000);
+    } else {
+        extracted = extract(axis_x, $(this).data("day"), (e) => [e[axis_legend]].concat(axis_t.map((t) => e[t])));
+        chart_event.axis.max(7000);
+    }
+
+    for (let i in extracted) {
+        setTimeout(function() {
+            chart_event.load({
+                "columns": [extracted[i]]
+            });
+        }, i * 100);
+    }
+
+});
+
+</script>
