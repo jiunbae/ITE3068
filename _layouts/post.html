@@ -22,13 +22,13 @@ readmore: true
 </article>
 
 <article class="post" id="reference">
-    <p>여기에는 <a href="https://naver.github.io/billboard.js">billboard.js</a>의 다음과 같은 기능들이 들어가 있습니다.</p>
+    <p>여기에는 <a href="{{ page.ref_url }}">{{ page.ref }}</a>의 다음과 같은 기능들이 들어가 있습니다.</p>
 
     <ul>
     {% for tag in page.tag %}
         {% assign tags = tag | split: '.' %}
-        <li><a href="https://naver.github.io/billboard.js/demo/#{{ tag }}">
-            {{ tags[1] }}
+        <li><a href="{{ page.ref_api_url }}{{ tag }}">
+            {{ tags | last }}
         </a></li>
     {% endfor %}
     </ul>
