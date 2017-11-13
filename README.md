@@ -6,9 +6,9 @@ Duplicated in [GitHub](https://github.com/MaybeS/ITE3068) for sort out my tasks.
 
 Assignment requirements
 
-- using [billboard.js](https://naver.github.io/billboard.js/)
-- usign [d3.js](https://d3js.org/)
-- Make [wiki](https://hconnect.hanyang.ac.kr/SW_studio2_2017/2015004584/wikis/home) on gitlab(provided by class)
+- [x] using [billboard.js](https://naver.github.io/billboard.js/)
+- [x] usign [d3.js](https://d3js.org/)
+- [x] Make [wiki](https://hconnect.hanyang.ac.kr/SW_studio2_2017/2015004584/wikis/home) on gitlab(provided by class)
 
 ## Website on [GitHub Pages](https://pages.github.com/)
 
