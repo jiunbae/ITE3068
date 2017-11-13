@@ -13,6 +13,10 @@ data_topo: https://raw.githubusercontent.com/MaybeS/ITE3068/gh-pages/_data/topo.
 data_acc: https://raw.githubusercontent.com/MaybeS/ITE3068/gh-pages/_data/2016_accident_by_states.csv
 ---
 
+<div id="{{ page.target }}-desc" class="description">
+    {{ site.data[page.data].description }}
+</div>
+
 <style>
     svg { background-color: #eee; }
     svg .municipality { fill: red; }
@@ -28,10 +32,6 @@ data_acc: https://raw.githubusercontent.com/MaybeS/ITE3068/gh-pages/_data/2016_a
     svg .municipality.p8 { fill: rgb(8,48,107); }
     svg text { font-size: 10px; }
 </style>
-
-<script src="https://d3js.org/d3.v3.min.js"></script>
-<script src="https://d3js.org/topojson.v1.min.js"></script>
-<script src="https://d3js.org/queue.v1.min.js"></script>
 
 <div id="chart"></div>
 <i>이 표는 광역시도별 사고 발생건수를 나타냅니다. 아래의 버튼을 이용해 사고의 종류를 선택하세요.</i>
@@ -53,15 +53,15 @@ var svg = d3.select("#chart").append("svg")
     .attr("width", width)
     .attr("height", height);
 
-var projection = d3.geo.mercator()
+var projection = d3.geoMercator()
     .center([128, 36])
     .scale(5000)
     .translate([width/2, height/2]);
 
-var path = d3.geo.path()
+var path = d3.geoPath()
     .projection(projection);
 
-var quantize = d3.scale.quantize()
+var quantize = d3.scaleQuantize()
     .domain([0, 1])
     .range(d3.range(9).map(function(i) { return "p" + i; }));
 
@@ -108,7 +108,7 @@ function draw(type) {
         "사망자수": .1,
         "중상자수": 1,
     };
-    quantize = d3.scale.quantize()
+    quantize = d3.scaleQuantize()
         .domain([0, max[type]])
         .range(d3.range(9).map(function(i) { return "p" + i; }));
 

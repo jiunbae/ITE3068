@@ -1,0 +1,61 @@
+---
+title: 연령별 사고 데이터
+date: 2017-11-12 16:28:00
+description: 2016년 연령별 사고 데이터
+author: MaybeS
+ref: billboard.js
+ref_url: https://naver.github.io/billboard.js/
+ref_api_url: https://naver.github.io/billboard.js/demo/#
+tag: [Chart.DonutChart, Legend.LegendTemplate1, DonutChartOptions.LabelRatio, DonutChartOptions.padAngle]
+target: accident_by_age
+data: 2016_accident_by_age
+---
+
+<div id="{{ page.target }}-desc" class="description">
+    {{ page.description }}
+</div>
+
+<div id="{{ page.target }}" calss="chart"></div>
+<div id="legends" class="offset-md-2"></div>
+<hr>
+<i>이 표는 연령대별 사고통계를 나타내고 있습니다. 아래의 버튼을 이용해 종류를 선택하세요.</i>
+
+<div class="col-md-5 offset-md-2">
+    <div class="btn-toolbar" role="toolbar">
+        <div class="btn-group mr-2" role="group">
+        {% for type in site.data.raw.types %}
+            {% if type != "발생건수" %}
+                <button type="button" id="btn-{{ type }}" data-type="{{ type }}" class="btn btn-secondary btn-type">{{ type }}</button>
+            {% endif %}
+        {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script>
+var chart = bb.generate({
+    "data": {
+        "columns": ["-14", "15-20", "21-30", "31-40", "41-50", "51-60", "61-64", "65-70", "70-"].map((e) => [e, 10]
+        ), "type": "donut",
+    }, "legend": {
+        "contents": {
+            "bindto": "#legends",
+            "template": "<span style='color:#fff;padding:10px;background-color:{=COLOR}'>{=TITLE}</span>"
+        }
+    }, "donut": {
+        "title": "{{ page.title }}",
+        "label": { 
+            "ratio": 1 
+        }, "padAngle": 0.02
+    }, "bindto": "#{{ page.target }}"
+});
+
+var data = $.parseJSON('[{{ site.data[page.data] }}]'.replace(/}{/g, "}, {").replace(/=>/g, ":"));
+
+$(".btn-type").on('click', function(e) {
+    var type = $(this).data("type");
+    chart.load({
+        columns: data.filter((e) => e.type == type).map((e) => [e.age, e.value]),
+    });
+});
+</script>
