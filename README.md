@@ -14,9 +14,9 @@ Duplicated in [GitHub](https://github.com/MaybeS/ITE3068) for sort out my tasks.
 - [ ] Use Hubblemon (10pts)
 - [x] Use NGrinder (10pts)
 - [x] [Naver Open Source](https://github.com/naver) Contribution
-    - [x] 1 Contribution (10pts)
-    - [ ] 2 Contribution (15pts)
-    - [ ] 3 Contribution (20pts)
+    - [x] [1 Contribution](https://github.com/naver/hubblemon/pull/22) (10pts)
+    - [x] [2 Contribution](https://github.com/naver/arcus-python-client/pull/13) (15pts)
+    - [ ] [3 Contribution](https://github.com/naver/arcus-python-client/issues/11) (20pts)
 
 ## Project
 
