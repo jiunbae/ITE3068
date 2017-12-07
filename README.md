@@ -7,12 +7,12 @@ Duplicated in [GitHub](https://github.com/MaybeS/ITE3068) for sort out my tasks.
 
 ## Project Requirements
 
-- [x] Use Docker (10pts)
-- [x] Performance Comparison (using arcus) (20pts)
-- [x] Use nBase-ARC (20pts)
+- [x] Use [Docker](https://www.docker.com/) (10pts)
+- [x] Performance Comparison (using [arcus](http://naver.github.io/arcus/)) (20pts)
+- [x] Use [nBase-ARC](https://github.com/naver/nbase-arc) (20pts)
 - [x] Use multi-node (10pts)
-- [ ] Use Hubblemon (10pts)
-- [x] Use NGrinder (10pts)
+- [ ] Use [Hubblemon](https://github.com/naver/hubblemon) (10pts)
+- [x] Use [nGrinder](http://naver.github.io/ngrinder/) (10pts)
 - [x] [Naver Open Source](https://github.com/naver) Contribution
     - [x] [1 Contribution](https://github.com/naver/hubblemon/pull/22) (10pts)
     - [x] [2 Contribution](https://github.com/naver/arcus-python-client/pull/13) (15pts)
