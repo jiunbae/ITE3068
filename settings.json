@@ -1,0 +1,43 @@
+[
+    {
+        "name": "arcus-admin",
+        "docker": "ruo91/arcus",
+        "host": "arcus"
+    }, {
+        "name": "arcus-memcached-1",
+        "docker": "ruo91/arcus:memcached",
+        "host": "memcached-1",
+        "port": {   
+            "host": 11211,
+            "cont": 11211
+        }
+    }, {
+        "name": "arcus-memcached-2",
+        "docker": "ruo91/arcus:memcached",
+        "host": "memcached-2"
+    }, {
+        "name": "arcus-memcached-3",
+        "docker": "ruo91/arcus:memcached",
+        "host": "memcached-3"
+    }, {
+        "name": "mysql",
+        "docker": "mysql:latest",
+        "testsize": 100000,
+        "port": {
+            "host": 3306,
+            "cont": 3306
+        }, "env": {
+            "MYSQL_ROOT_PASSWORD": "password",
+            "MYSQL_USER": "maybe",
+            "MYSQL_PASSWORD": "password",
+            "MYSQL_DATABASE": "ite3068"
+        }
+    }, {
+        "name": "nbase-arc",
+        "docker": "hyeongseok05/nbase-arc",
+        "port": {
+            "host": 6000,
+            "cont": 6000   
+        }
+    }
+]
