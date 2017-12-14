@@ -1,0 +1,43 @@
+FROM        inikolaev/jdk-ant
+
+MAINTAINER  Bae jiun <maytryark@gmail.com>
+
+RUN sed -i 's/httpredir.debian.org/ftp.daumkakao.com/g' /etc/apt/sources.list
+
+RUN apt-get update && apt-get install -y supervisor openssh-server aptitude net-tools iputils-ping nano curl git netcat build-essential make gcc g++ autoconf automake libtool libextutils-pkgconfig-perl libcppunit-dev python2.7-dev python-setuptools subversion
+
+ENV SRC_DIR /opt
+
+# Build Arcus
+RUN cd $SRC_DIR && git clone https://github.com/naver/arcus.git \
+ && cd arcus/scripts && ./build.sh
+
+# Generate SSH key
+RUN ssh-keygen -t dsa -P '' -f "/root/.ssh/id_dsa"
+RUN cat /root/.ssh/id_dsa.pub >> /root/.ssh/authorized_keys
+RUN chmod 644 /root/.ssh/authorized_keys
+
+# Set Supervisor
+RUN mkdir -p /var/log/supervisor
+ADD ./arcus/conf.supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Set SSH
+RUN mkdir /var/run/sshd
+RUN sed -i 's/without-password/yes/g' /etc/ssh/sshd_config
+RUN sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
+
+# Set root passwd
+RUN echo 'root:arcus' |chpasswd
+
+# Expose port
+EXPOSE 22
+
+COPY ./arcus/etc.arcus.sh /opt/arcus/scripts/etc/arcus.sh
+COPY ./arcus/fabfile.py /opt/arcus/scripts/fabfile.py
+COPY ./arcus/install.sh /opt/arcus/scripts/install.sh
+
+WORKDIR /opt/arcus/scripts
+
+CMD ["./install.sh"]
+
+CMD ["/usr/bin/supervisord"]

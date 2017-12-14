@@ -1,0 +1,104 @@
+version: '3'
+services:
+    api:
+        build:
+            context: .
+            dockerfile: app/dockerfile
+        image: ite3068/api
+        ports:
+            - "6230:6230"
+        depends_on:
+            - mysql
+        environment:
+            PORT: 6230
+            DB_HOST: mysql
+            DB_USERNAME: maybe
+            DB_PASSWORD: password
+            DB_PORT: 3306
+            DB_DATABASE: ite3068
+            ARCUS_HOST: arcus
+            NBASE_ARC_HOST: nbase-arc
+    mysql:
+        image: mysql:latest
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: password
+            MYSQL_USER: maybe
+            MYSQL_PASSWORD: password
+            MYSQL_DATABASE: ite3068
+    arcus:
+        build:
+            context: .
+            dockerfile: arcus/dockerfile
+        image: ite3068/arcus
+        depends_on:
+            - arcus-memcached-1
+            - arcus-memcached-2
+            - arcus-memcached-3
+        environment:
+            MEMCACHED: arcus-memcached-1;arcus-memcached-2;arcus-memcached-3;
+    arcus-memcached-1:
+        image: ruo91/arcus:memcached
+        ports:
+            - "11211:11211"
+        # depends_on:
+        #     - mysql
+        # volumes:
+        #     - ./arcus/authorized_keys:/root/.ssh/authorized_keys
+        #     - ./arcus/memcached/install.sh:/opt/install.sh
+        #     - ./arcus/memcached/arcus.tar.gz:/opt/arcus.tar.gz
+        #     - ./arcus/memcached/zoo.cfg:/opt/zoo.cfg
+        # environment:
+        #     MEMCACHED_ID: 1
+        # command: /opt/install.sh
+    arcus-memcached-2:
+        image: ruo91/arcus:memcached
+        # depends_on:
+        #     - mysql
+        # volumes:
+        #     - ./arcus/authorized_keys:/root/.ssh/authorized_keys
+        #     - ./arcus/memcached/install.sh:/opt/install.sh
+        #     - ./arcus/memcached/arcus.tar.gz:/opt/arcus.tar.gz
+        #     - ./arcus/memcached/zoo.cfg:/opt/zoo.cfg
+        # environment:
+        #     MEMCACHED_ID: 2
+        # command: /opt/install.sh
+    arcus-memcached-3:
+        image: ruo91/arcus:memcached
+        # depends_on:
+        #     - mysql
+        # volumes:
+        #     - ./arcus/authorized_keys:/root/.ssh/authorized_keys
+        #     - ./arcus/memcached/install.sh:/opt/install.sh
+        #     - ./arcus/memcached/arcus.tar.gz:/opt/arcus.tar.gz
+        #     - ./arcus/memcached/zoo.cfg:/opt/zoo.cfg
+        # environment:
+        #     MEMCACHED_ID: 3
+        # command: /opt/install.sh
+    # nbase-arc:
+    #     image: hyeongseok05/nbase-arc
+    #     ports:
+    #         - "6000:6000"
+    #     depends_on:
+    #         - arcus
+    # ngrinder-web:
+    #     image: ngrinder/controller:3.3
+    #     restart: always
+    #     ports:
+    #         - "16001:16001"
+    #         - "12000-12009:12000-12009"
+    #         - "8999:80"
+    #     depends_on:
+    #         - arcus
+    #         - nbase-arc
+    # ngrinder-agent:
+    #     image: ngrinder/agent:3.3
+    #     restart: always
+    #     links:
+    #         - ngrinder-web
+    #     environment:
+    #         - CONTROLLER_ADDR=ngrinder-web:80
+    #     depends_on:
+    #         - ngrinder-web
+

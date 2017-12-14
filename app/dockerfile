@@ -1,0 +1,12 @@
+FROM python:3.5.4-alpine
+
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+COPY app/app.py /usr/src/app
+COPY app/requirements.txt /usr/src/app
+RUN pip install -r requirements.txt
+
+EXPOSE 6230
+
+CMD ["python", "app.py"]

@@ -4,18 +4,26 @@ import memcache
 import redis
 import random
 
+from time import sleep
+from os import environ
+
 app = Flask(__name__)
 
 testsize = 100000
 
-
-connection = pymysql.connect(host='127.0.0.1',
-                             user='maybe',
-                             password='password',
-                             db='ite3068')
-cursor = connection.cursor()
-nbase = redis.StrictRedis(port=6000)
-arcus = memcache.Client(["127.0.0.1:11211"])
+while True:
+    try:
+        connection = pymysql.connect(host=environ['DB_HOST'],
+                                     port=int(environ['DB_PORT']),
+                                     user=environ['DB_USERNAME'],
+                                     password=environ['DB_PASSWORD'],
+                                     db=environ['DB_DATABASE'],)
+        cursor = connection.cursor()
+        nbase = redis.StrictRedis(host=environ['NBASE_ARC_HOST'], port=6000)
+        arcus = memcache.Client([environ['ARCUS_HOST'] + ":11211"])
+    except:
+        print ('connection failed ... wait for 5s')
+        sleep(15)
 
 @app.route('/')
 def main():
@@ -37,12 +45,12 @@ def select(record_id):
     return res
 
 @app.route('/mysql', methods=['GET'])
-def mysql(record_id = None):
+def mysql():
     record_id = request.args.get('id', random.randint(1, testsize))
     return str(select(record_id))
 
 @app.route('/arcus', methods=['GET'])
-def arcus_(record_id = None):
+def arcus_():
     record_id = request.args.get('id', random.randint(1, testsize))
     res = arcus.get(str(record_id))
     if res:
@@ -53,7 +61,7 @@ def arcus_(record_id = None):
         return 'Cache Miss: ' + str(res)
 
 @app.route('/nbase', methods=['GET'])
-def nbase_(record_id = None):
+def nbase_():
     record_id = request.args.get('id', random.randint(1, testsize))
     res = nbase.get(record_id)
     if res:
@@ -64,5 +72,5 @@ def nbase_(record_id = None):
         return 'Cache Miss: ' + str(res)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True, port=5000)
+    app.run(host='0.0.0.0', debug=True, port=int(environ['PORT']))
 
