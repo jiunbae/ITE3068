@@ -2,7 +2,7 @@ import argparse
 import json
 import pickle
 from subprocess import Popen, PIPE
-
+from urllib import request
 project = "ite3068"
 
 parser = argparse.ArgumentParser(description='ITE3068 Project manager application', prog="ITE3068 Project manager")
@@ -13,10 +13,12 @@ args = parser.parse_args()
 
 setting = json.load(open(args.setting))
 
-def execute(commands):
+def execute(commands, wait=True):
+    print ('\tExecute: {}'.format(commands))
     process = Popen(commands.split(' '), stdout=PIPE, stderr=PIPE)
-    stdout, stderr = process.communicate()
-    return False if stderr else stdout.decode('utf-8')[:-1]
+    if wait:
+        stdout, stderr = process.communicate()
+        return False if stderr else stdout.decode('utf-8')[:-1]
 
 def docker_stop(container):
     return 'docker rm -f {}'.format(container)
@@ -33,10 +35,14 @@ def docker_run(setting):
     return command
 
 if args.action == 'start':
+    # network
+    print ('Docker network initializing ...')
     network = execute("docker network create {}".format(project))
+
+    # container
+    print ('Docker container initializing ...')
     containers = [execute(docker_run(container)) for container in setting]
-    print ('network: ', network, 'started')
-    list(map(print, containers))
+    print ('network: {}'.format(network))
     if all(container for container in containers):
         pickle.dump(containers, open('containers.p', 'wb'))
         print ('All container started!')
@@ -44,21 +50,42 @@ if args.action == 'start':
         print ('Error raised while starting')
 
     # volumn
+    print ('Docker volumn initializing ...')
     for container in setting:
         for volumn in container.get('volumn', list()):
             tar, obj = volumn.split(':')
             execute("docker cp {} {}:{}".format(tar, container['name'], obj))
 
     # run command
+    print ('Docker command executing ...')
     for container in setting:
         for cmd in container.get('command', list()):
             print ("{} run command: {}".format(container['name'], cmd))
-            execute("docker exec {} {}".format(container['name'], cmd))
+            execute("docker exec {} {}".format(container['name'], cmd), False)
+
+    print ('Docker started!')
+
+    # wait
+    print ('Waiting for instance initializing ...')
+    for container in setting:
+        for k, v in container.get('wait', dict()).items():
+            print ('Waiting {} ...'.format(k))
+            while True:
+                try:
+                    request.urlopen('http://{}/'.format(v))
+                    break;
+                except:
+                    pass
+    print ('Waiting done! Instance initialized!')
 
 elif args.action == 'stop':
+    # container
+    print ('Docker container removing ...')
     containers = pickle.load(open('containers.p', 'rb'))
     results = [execute(docker_stop(container)) for container in containers]
-    list(map(print, results))
+
+    # network
+    print ('Docker network removing ...')
     network = execute("docker network rm {}".format(project))
     print ('network: ', network, 'started')
     if all(result for result in results):

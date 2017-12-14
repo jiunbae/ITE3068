@@ -19,7 +19,11 @@
             "hubblemon/install.sh:/opt/",
             "hubblemon/arcus/common.settings.py:/opt/",
             "hubblemon/arcus/collect_client.run_client.py:/opt/"
-        ]
+        ], "command": [
+            "/bin/bash -c /opt/install.sh"
+        ], "wait": {
+            "HUBBLEMON": "localhost:4584"
+        }
     }, {
         "name": "arcus-memcached-2",
         "docker": "ruo91/arcus:memcached",
@@ -30,7 +34,7 @@
         "host": "memcached-3"
     }, {
         "name": "mysql",
-        "docker": "mysql:latest",
+        "docker": "mysql:5.7",
         "testsize": 100000,
         "ports": [{
             "host": 3306,
@@ -49,7 +53,11 @@
             "hubblemon/arcus/common.settings.py:/opt/",
             "hubblemon/arcus/collect_client.run_client.py:/opt/",
             "hubblemon/arcus/collect_client.client_mysql_plugin.py:/opt/"
-        ]
+        ], "command": [
+            "/bin/bash -c /opt/install.sh"
+        ], "wait": {
+            "HUBBLEMON": "localhost:4584"
+        }
     }, {
         "name": "nbase-arc",
         "docker": "hyeongseok05/nbase-arc",
@@ -65,6 +73,10 @@
             "hubblemon/install.sh:/opt/",
             "hubblemon/nbase/common.settings.py:/opt/",
             "hubblemon/nbase/collect_client.run_client.py:/opt/"
-        ]
+        ], "command": [
+            "/bin/bash -c /opt/install.sh"
+        ], "wait": {
+            "HUBBLEMON": "localhost:4584"
+        }
     }
 ]

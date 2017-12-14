@@ -14,9 +14,13 @@ pip3 install psutil rrdtool
 
 pip3 install -r requirements.txt
 
-python3 collect_server/run_server.py &
-python3 collect_server/run_listener.py &
-python3 collect_client/run_client.py &
-python3 manage.py migrate
+nohup python3 collect_server/run_server.py &
+sleep 1
+nohup python3 collect_server/run_listener.py &
+sleep 1
+nohup python3 collect_client/run_client.py &
+sleep 1
 
-python3 manage.py runserver 0.0.0.0:$HUBBLEMON
+nohup python3 manage.py migrate &
+sleep 1
+nohup python3 manage.py runserver  0.0.0.0:$HUBBLEMON &
