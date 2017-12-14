@@ -7,10 +7,19 @@
         "name": "arcus-memcached-1",
         "docker": "ruo91/arcus:memcached",
         "host": "memcached-1",
-        "port": {   
+        "ports": [{   
             "host": 11211,
             "cont": 11211
-        }
+        }, {
+            "host": 4586,
+            "cont": 4586
+        }], "env": {
+            "HUBBLEMON": 4586
+        }, "volumn": [
+            "hubblemon/install.sh:/opt/",
+            "hubblemon/arcus/common.settings.py:/opt/",
+            "hubblemon/arcus/collect_client.run_client.py:/opt/"
+        ]
     }, {
         "name": "arcus-memcached-2",
         "docker": "ruo91/arcus:memcached",
@@ -23,21 +32,39 @@
         "name": "mysql",
         "docker": "mysql:latest",
         "testsize": 100000,
-        "port": {
+        "ports": [{
             "host": 3306,
             "cont": 3306
-        }, "env": {
+        }, {
+            "host": 4584,
+            "cont": 4584
+        }], "env": {
+            "HUBBLEMON": 4584,
             "MYSQL_ROOT_PASSWORD": "password",
             "MYSQL_USER": "maybe",
             "MYSQL_PASSWORD": "password",
             "MYSQL_DATABASE": "ite3068"
-        }
+        }, "volumn": [
+            "hubblemon/install.sh:/opt/",
+            "hubblemon/arcus/common.settings.py:/opt/",
+            "hubblemon/arcus/collect_client.run_client.py:/opt/",
+            "hubblemon/arcus/collect_client.client_mysql_plugin.py:/opt/"
+        ]
     }, {
         "name": "nbase-arc",
         "docker": "hyeongseok05/nbase-arc",
-        "port": {
+        "ports": [{
             "host": 6000,
             "cont": 6000   
-        }
+        }, {
+            "host": 4585,
+            "cont": 4585
+        }], "env": {
+            "HUBBLEMON": 4585
+        }, "volumn": [
+            "hubblemon/install.sh:/opt/",
+            "hubblemon/nbase/common.settings.py:/opt/",
+            "hubblemon/nbase/collect_client.run_client.py:/opt/"
+        ]
     }
 ]
