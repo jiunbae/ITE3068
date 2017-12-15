@@ -82,11 +82,11 @@ if args.action == 'start':
 
     ## Case for my app
     # nbase arc setup
-    execute('/bin/bash -c /root/install.sh')
+    execute('docker exec nbase-arc /bin/bash -c /root/install.sh', False)
 
-    # run api server
+    # api server
+    execute('python3 api/app.py', False)
     print ('API Server started!')
-    execute('python api/app.py')
 
 elif args.action == 'stop':
     # container

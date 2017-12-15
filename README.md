@@ -27,9 +27,11 @@ Duplicated in [GitHub](https://github.com/MaybeS/ITE3068) for sort out my tasks.
 
 Using [Docker](https://www.docker.com/) with [arcus](https://hub.docker.com/r/ruo91/arcus/), [MySQL](https://hub.docker.com/_/mysql/), [nBase-ARC](https://hub.docker.com/r/hyeongseok05/nbase-arc/).
 
-app is simple flask app for performance comparison.
+API app is simple flask app for performance comparison.
 
-### App (for performance comparison)
+All settings are stored in `settings.json`. you can change enviroments for you own service.
+
+### API App (for performance comparison)
 Powered by flask, support simple RestfulAPI for performance comparison.
 
 API Lists
@@ -43,10 +45,63 @@ API Lists
 - `GET`: `/nbase`
     Select some integer from nbase if missed, select from mysql and add to nbase
 
+### MySQL
+
+Pulling from public mysql dockerfile(version `5.7`, but it can also `latest`).
+There are some enviroments for mysql db.
+
+- *MYSQL_ROOT_PASSWORD*: password
+- *MYSQL_USER*: maybe
+- *MYSQL_PASSWORD*: password
+- *MYSQL_DATABASE*: ite3068
+
+### Arcus
+
+Pulling from [ruo91/arcus](https://hub.docker.com/r/ruo91/arcus/) and some appendix scripts for memcached server.
+See `arcus/install.sh`. It provide arcus to memcached server list and set up zookeeper and memcached.
+It automatically run after docker container started.
+
+### nBase-ARC
+
+Pulling from [hyeongseok05/nbase-arc](https://hub.docker.com/r/hyeongseok05/nbase-arc/).
+Dockerfile prepare all for start nbase-arc, so just start docker container is enough.
+
+### Hubblemon
+
+It's difficult to compose all of docker container in a single `docker-compose`. 
+*Because, arcus and memcached require settins after container started.*
+
+So, hubblemon run each `mysql`, `arcus`, `nbase`.
+To do this, after each container started, process `hubblemon/install.sh`.
+
+Script contains below
+
+- Install depedency (It takes time depending on the internet(or repo server) speed)
+- Clone hubblemon repository
+- Copy each setting
+- Install python dependency
+- Run server
+
 ### nGrinder Test
+
 nGrinder supports writing a script that sends an HTTP request and sends it to the agent for testing. 
 The web server receives the HTTP request and can communicate with the mysql server or the arcus server. 
 Now you can actually write those scripts through nGrinder to compare performance differences between using the mysql server directly and the arcus server.
 
 You can test the performance in nGrinder by calling the api created in the flask app above.
 
+## Usage 
+
+Just run application, it uses docker service.
+
+```
+python app.py start
+```
+
+for stop service,
+
+```
+python app.py stop
+```
+
+Require `python3`, `docker` only.
