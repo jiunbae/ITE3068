@@ -26,7 +26,7 @@ def docker_stop(container):
     return 'docker rm -f {}'.format(container)
 
 def docker_run(setting):
-    command = 'docker run -d --net={}'.format(project)
+    command = 'docker run -d --net {}'.format(project)
     if 'name' in setting:
         command += ' --name={}'.format(setting['name'])
     for port in setting.get('ports', list()):
@@ -64,6 +64,9 @@ if args.action == 'start':
         for cmd in container.get('commands', list()):
             execute("docker exec {} {}".format(container['name'], cmd), False)
 
+
+    execute('docker exec -d nbase-arc ./root/install.sh')
+
     print ('Docker started!')
 
     # wait
@@ -80,14 +83,6 @@ if args.action == 'start':
 
     print ('Waiting done! Instance initialized!')
 
-    ## Case for my app
-    # nbase arc setup
-    execute('docker exec nbase-arc /bin/bash -c /root/install.sh', False)
-
-    # api server
-    execute('python3 api/app.py', False)
-    print ('API Server started!')
-
 elif args.action == 'stop':
     # container
     print ('Docker container removing ...')
@@ -97,7 +92,7 @@ elif args.action == 'stop':
     # network
     print ('Docker network removing ...')
     network = execute("docker network rm {}".format(project))
-    print ('network: ', network, 'started')
+    print ('network: ', network, 'stopped')
     if all(result for result in results):
         print ('All container stopped!') 
     else:
