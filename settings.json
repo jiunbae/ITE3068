@@ -8,7 +8,7 @@
         }, "volumn": [
             "arcus/install.sh:/opt/"
         ], "commands": [
-            "./opt/install.sh"
+            "/bin/bash -c /opt/install.sh"
         ]
     }, {
         "name": "arcus-memcached-1",
@@ -27,7 +27,7 @@
             "hubblemon/arcus/common.settings.py:/opt/",
             "hubblemon/arcus/collect_client.run_client.py:/opt/"
         ], "commands": [
-            "./opt/install.sh"
+            "/bin/bash -c /opt/install.sh"
         ], "wait": {
             "HUBBLEMON": "localhost:4586"
         }
@@ -61,7 +61,7 @@
             "hubblemon/mysql/collect_client.run_client.py:/opt/",
             "hubblemon/mysql/collect_client.client_mysql_plugin.py:/opt/"
         ], "commands": [
-            "./opt/install.sh"
+            "/bin/bash -c /opt/install.sh"
         ], "wait": {
             "HUBBLEMON": "localhost:4584"
         }
@@ -81,7 +81,7 @@
             "hubblemon/nbase/common.settings.py:/opt/",
             "hubblemon/nbase/collect_client.run_client.py:/opt/"
         ], "commands": [
-            "./opt/install.sh"
+            "/bin/bash -c /opt/install.sh"
         ], "wait": {
             "HUBBLEMON": "localhost:4585"
         }
