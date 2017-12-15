@@ -27,7 +27,6 @@
             "hubblemon/arcus/common.settings.py:/opt/",
             "hubblemon/arcus/collect_client.run_client.py:/opt/"
         ], "commands": [
-            "/bin/bash -c /opt/install.sh"
         ], "wait": {
             "HUBBLEMON": "localhost:4586"
         }
@@ -57,11 +56,10 @@
             "MYSQL_DATABASE": "ite3068"
         }, "volumn": [
             "hubblemon/install.sh:/opt/",
-            "hubblemon/arcus/common.settings.py:/opt/",
-            "hubblemon/arcus/collect_client.run_client.py:/opt/",
-            "hubblemon/arcus/collect_client.client_mysql_plugin.py:/opt/"
+            "hubblemon/mysql/common.settings.py:/opt/",
+            "hubblemon/mysql/collect_client.run_client.py:/opt/",
+            "hubblemon/mysql/collect_client.client_mysql_plugin.py:/opt/"
         ], "commands": [
-            "/bin/bash -c /opt/install.sh"
         ], "wait": {
             "HUBBLEMON": "localhost:4584"
         }
@@ -81,7 +79,6 @@
             "hubblemon/nbase/common.settings.py:/opt/",
             "hubblemon/nbase/collect_client.run_client.py:/opt/"
         ], "commands": [
-            "/bin/bash -c /opt/install.sh"
         ], "wait": {
             "HUBBLEMON": "localhost:4585"
         }

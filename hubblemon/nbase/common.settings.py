@@ -33,12 +33,13 @@ from data_loader.remote_storage import remote_storage_manager
 collect_server_port = 40000
 
 hostname = socket.gethostname()
+address = socket.gethostbyname(hostname)
 
 # should be sorted by addr
 #  add listener if you want
 
 # listener_list =[('%s:40001' % hostname, rrd_storage_manager('collect_server/listener_40001'))]
-listener_list =[('%s:40001' % hostname, sql_storage_manager('hubblemon.db'))]
+listener_list =[('%s:40001' % address, sql_storage_manager('hubblemon.db'))]
 # listener_list =[('%s:40001' % hostname, tsdb_storage_manager('127.0.0.1:8000'))]
 
 '''
