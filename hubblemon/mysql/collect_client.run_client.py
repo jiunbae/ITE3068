@@ -30,11 +30,10 @@ from client_mysql_plugin import mysql_stat
 from os import environ
 
 hostname = socket.gethostname()
-
+address = socket.gethostbyname(hostname)
 
 #server_address = ['1.1.1.1:40000', '2.2.2.2:40000'] # your collect server address
-server_address = ['%s:40000' % hostname] # your collect server address
-
+server_address = ['%s:40000' % address] # your collect server address
 
 if True:
     c = collectd(hostname, server_address)

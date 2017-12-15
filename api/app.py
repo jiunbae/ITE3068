@@ -15,9 +15,13 @@ while True:
                                      password='password',
                                      db='ite3068')
         cursor = connection.cursor()
-        nbase = redis.StrictRedis(port=6000)
+        nbase = redis.StrictRedis(host='127.0.0.1', port=6000)
+        nbase.get(None)
         arcus = memcache.Client(["127.0.0.1:11211", "127.0.0.1:11212"])
         break
+    except redis.ConnectionError:
+        print ('Redis Connection failed ... wait for 5s')
+        sleep(5)
     except:
         print ('Connection failed ... wait for 5s')
         sleep(5)
