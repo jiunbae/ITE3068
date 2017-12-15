@@ -64,8 +64,7 @@ if args.action == 'start':
         for cmd in container.get('commands', list()):
             execute("docker exec {} {}".format(container['name'], cmd), False)
 
-
-    execute('docker exec -d nbase-arc ./root/install.sh')
+    execute('docker exec -d nbase-arc /bin/bash -c /root/install.sh')
 
     print ('Docker started!')
 
