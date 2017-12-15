@@ -59,27 +59,34 @@ if args.action == 'start':
             execute("docker cp {} {}:{}".format(tar, container['name'], obj))
 
     # run command
-    print ('Docker command executing ...')
+    print ('Docker commands executing ...')
     for container in setting:
-        for cmd in container.get('command', list()):
+        for cmd in container.get('commands', list()):
             execute("docker exec {} {}".format(container['name'], cmd), False)
 
     print ('Docker started!')
 
     # wait
-    # print ('Waiting for instance initializing ...')
-    # for container in setting:
-    #     for k, v in container.get('wait', dict()).items():
-    #         print ('{} Waiting {} ...'.format(container['name'], k))
-    #         while True:
-    #             try:
-    #                 request.urlopen('http://{}/'.format(v))
-    #                 break;
-    #             except:
-    #                 sleep(5)
-    #                 pass
+    print ('Waiting for instance initializing ...')
+    for container in setting:
+        for k, v in container.get('wait', dict()).items():
+            print ('{} Waiting {} ...'.format(container['name'], k))
+            while True:
+                try:
+                    request.urlopen('http://{}/'.format(v))
+                    break;
+                except:
+                    sleep(5)
 
-    # print ('Waiting done! Instance initialized!')
+    print ('Waiting done! Instance initialized!')
+
+    ## Case for my app
+    # nbase arc setup
+    execute('/bin/bash -c /root/install.sh')
+
+    # run api server
+    print ('API Server started!')
+    execute('python api/app.py')
 
 elif args.action == 'stop':
     # container
