@@ -58,29 +58,30 @@ if args.action == 'start':
             tar, obj = volumn.split(':')
             execute("docker cp {} {}:{}".format(tar, container['name'], obj))
 
+    # Depricated docker exec block original scripts
     # run command
-    print ('Docker commands executing ...')
-    for container in setting:
-        for cmd in container.get('commands', list()):
-            execute("docker exec {} {}".format(container['name'], cmd), False)
+    # print ('Docker commands executing ...')
+    # for container in setting:
+    #     for cmd in container.get('commands', list()):
+    #         execute("docker exec -it {} {}".format(container['name'], cmd), False)
 
-    execute('docker exec -d nbase-arc /bin/bash -c /root/install.sh')
+    # execute('docker exec -it nbase-arc /bin/bash -c /root/install.sh')
 
     print ('Docker started!')
 
     # wait
-    print ('Waiting for instance initializing ...')
-    for container in setting:
-        for k, v in container.get('wait', dict()).items():
-            print ('{} Waiting {} ...'.format(container['name'], k))
-            while True:
-                try:
-                    request.urlopen('http://{}/'.format(v))
-                    break;
-                except:
-                    sleep(5)
+    # print ('Waiting for instance initializing ...')
+    # for container in setting:
+    #     for k, v in container.get('wait', dict()).items():
+    #         print ('{} Waiting {} ...'.format(container['name'], k))
+    #         while True:
+    #             try:
+    #                 request.urlopen('http://{}/'.format(v))
+    #                 break;
+    #             except:
+    #                 sleep(5)
 
-    print ('Waiting done! Instance initialized!')
+    # print ('Waiting done! Instance initialized!')
 
 elif args.action == 'stop':
     # container
