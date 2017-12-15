@@ -6,7 +6,7 @@ import random
 from time import sleep
 app = Flask(__name__)
 
-testsize = 100000
+testsize = 10000
 
 while True:
     try:
@@ -35,7 +35,9 @@ def init():
     cursor.execute('drop table if exists testset');
     cursor.execute('create table testset ( id int, data int );')
     for i in range(testsize):
-        cursor.execute('insert into testset values(%s,%s)'%(i + 1, random.randint(0, testsize)))
+        v = random.randint(0, testsize)
+        cursor.execute('insert into testset values(%s,%s)'%(i + 1, v))
+        nbase.set(i + 1, v)
     connection.commit()
     return 'Initialization finished'
 
