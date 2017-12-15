@@ -2,7 +2,14 @@
     {
         "name": "arcus-admin",
         "docker": "ruo91/arcus",
-        "host": "arcus"
+        "host": "arcus",
+        "env": {
+            "MEMCACHED": "arcus-REMOVED-CREDENTIAL-1;arcus-REMOVED-CREDENTIAL-2;arcus-REMOVED-CREDENTIAL-3;"
+        }, "volumn": [
+            "arcus/install.sh:/opt/"
+        ], "command": [
+            "/bin/bash -c /opt/install.sh"
+        ]
     }, {
         "name": "arcus-REMOVED-CREDENTIAL-1",
         "docker": "ruo91/arcus:REMOVED-CREDENTIAL",
@@ -22,7 +29,7 @@
         ], "command": [
             "/bin/bash -c /opt/install.sh"
         ], "wait": {
-            "HUBBLEMON": "localhost:4584"
+            "HUBBLEMON": "localhost:4586"
         }
     }, {
         "name": "arcus-REMOVED-CREDENTIAL-2",
@@ -76,7 +83,7 @@
         ], "command": [
             "/bin/bash -c /opt/install.sh"
         ], "wait": {
-            "HUBBLEMON": "localhost:4584"
+            "HUBBLEMON": "localhost:4585"
         }
     }
 ]
