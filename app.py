@@ -3,6 +3,8 @@ import json
 import pickle
 from subprocess import Popen, PIPE
 from urllib import request
+from time import sleep
+
 project = "ite3068"
 
 parser = argparse.ArgumentParser(description='ITE3068 Project manager application', prog="ITE3068 Project manager")
@@ -60,23 +62,24 @@ if args.action == 'start':
     print ('Docker command executing ...')
     for container in setting:
         for cmd in container.get('command', list()):
-            print ("{} run command: {}".format(container['name'], cmd))
             execute("docker exec {} {}".format(container['name'], cmd), False)
 
     print ('Docker started!')
 
     # wait
-    print ('Waiting for instance initializing ...')
-    for container in setting:
-        for k, v in container.get('wait', dict()).items():
-            print ('Waiting {} ...'.format(k))
-            while True:
-                try:
-                    request.urlopen('http://{}/'.format(v))
-                    break;
-                except:
-                    pass
-    print ('Waiting done! Instance initialized!')
+    # print ('Waiting for instance initializing ...')
+    # for container in setting:
+    #     for k, v in container.get('wait', dict()).items():
+    #         print ('{} Waiting {} ...'.format(container['name'], k))
+    #         while True:
+    #             try:
+    #                 request.urlopen('http://{}/'.format(v))
+    #                 break;
+    #             except:
+    #                 sleep(5)
+    #                 pass
+
+    # print ('Waiting done! Instance initialized!')
 
 elif args.action == 'stop':
     # container

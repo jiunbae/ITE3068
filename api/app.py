@@ -3,19 +3,24 @@ import pymysql
 import memcache
 import redis
 import random
-
+from time import sleep
 app = Flask(__name__)
 
 testsize = 100000
 
-
-connection = pymysql.connect(host='127.0.0.1',
-                             user='maybe',
-                             password='password',
-                             db='ite3068')
-cursor = connection.cursor()
-nbase = redis.StrictRedis(port=6000)
-arcus = memcache.Client(["127.0.0.1:11211"])
+while True:
+    try:
+        connection = pymysql.connect(host='127.0.0.1',
+                                     user='maybe',
+                                     password='password',
+                                     db='ite3068')
+        cursor = connection.cursor()
+        nbase = redis.StrictRedis(port=6000)
+        arcus = memcache.Client(["127.0.0.1:11211", "127.0.0.1:11212"])
+        break
+    except:
+        print ('Connection failed ... wait for 5s')
+        sleep(5)
 
 @app.route('/')
 def main():
@@ -37,12 +42,12 @@ def select(record_id):
     return res
 
 @app.route('/mysql', methods=['GET'])
-def mysql(record_id = None):
+def mysql():
     record_id = request.args.get('id', random.randint(1, testsize))
     return str(select(record_id))
 
 @app.route('/arcus', methods=['GET'])
-def arcus_(record_id = None):
+def arcus_():
     record_id = request.args.get('id', random.randint(1, testsize))
     res = arcus.get(str(record_id))
     if res:
@@ -53,7 +58,7 @@ def arcus_(record_id = None):
         return 'Cache Miss: ' + str(res)
 
 @app.route('/nbase', methods=['GET'])
-def nbase_(record_id = None):
+def nbase_():
     record_id = request.args.get('id', random.randint(1, testsize))
     res = nbase.get(record_id)
     if res:

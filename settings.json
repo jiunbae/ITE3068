@@ -2,7 +2,14 @@
     {
         "name": "arcus-admin",
         "docker": "ruo91/arcus",
-        "host": "arcus"
+        "host": "arcus",
+        "env": {
+            "MEMCACHED": "arcus-memcached-1;arcus-memcached-2;arcus-memcached-3;"
+        }, "volumn": [
+            "arcus/install.sh:/opt/"
+        ], "command": [
+            "/bin/bash -c /opt/install.sh"
+        ]
     }, {
         "name": "arcus-memcached-1",
         "docker": "ruo91/arcus:memcached",
@@ -22,7 +29,7 @@
         ], "command": [
             "/bin/bash -c /opt/install.sh"
         ], "wait": {
-            "HUBBLEMON": "localhost:4584"
+            "HUBBLEMON": "localhost:4586"
         }
     }, {
         "name": "arcus-memcached-2",
@@ -76,7 +83,7 @@
         ], "command": [
             "/bin/bash -c /opt/install.sh"
         ], "wait": {
-            "HUBBLEMON": "localhost:4584"
+            "HUBBLEMON": "localhost:4585"
         }
     }
 ]
