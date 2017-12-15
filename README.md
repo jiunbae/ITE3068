@@ -11,12 +11,17 @@ Duplicated in [GitHub](https://github.com/MaybeS/ITE3068) for sort out my tasks.
 - [x] Performance Comparison (using [arcus](http://naver.github.io/arcus/)) (20pts)
 - [x] Use [nBase-ARC](https://github.com/naver/nbase-arc) (20pts)
 - [x] Use multi-node (10pts)
-- [ ] Use [Hubblemon](https://github.com/naver/hubblemon) (10pts)
+- [x] Use [Hubblemon](https://github.com/naver/hubblemon) (10pts)
 - [x] Use [nGrinder](http://naver.github.io/ngrinder/) (10pts)
 - [x] [Naver Open Source](https://github.com/naver) Contribution
-    - [x] [1 Contribution](https://github.com/naver/hubblemon/pull/22) (10pts)
-    - [x] [2 Contribution](https://github.com/naver/arcus-python-client/pull/13) (15pts)
-    - [ ] [3 Contribution](https://github.com/naver/arcus-python-client/issues/11) (20pts)
+    - Oppend Issues
+        1. [arcus-python-client: `Pypi's arcus package seems to have expired`](https://github.com/naver/arcus-python-client/issues/11)
+        2. [arcus-python-client: `Not working in macOS`](https://github.com/naver/arcus-python-client/issues/12)
+        3. [arcus: `Support docker`](https://github.com/naver/arcus/issues/35)
+    - Pull Requests
+        1. [hubblemon: `update dependency`](https://github.com/naver/hubblemon/pull/22)
+        2. [arcus-python-client: `Update Poller for darwin(macOS)`](https://github.com/naver/arcus-python-client/pull/13)
+        3. [arcus: `Update dockerfile`](https://github.com/naver/arcus/pull/36)
 
 ## Project
 
