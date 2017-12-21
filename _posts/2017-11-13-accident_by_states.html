@@ -9,6 +9,7 @@ ref_api_url: https://github.com/d3/d3/blob/master/API.md#
 tag: [queues-d3-queue, geographies-d3-geo, selections-d3-selection, quantize-scales]
 target: accident_by_states
 data: 2016_accident_by_states
+data_token: AHWvGgBatKFv5TMzmoFurEgzlU5oyStaks5aRK2PwA%3D%3D
 data_topo: https://raw.githubusercontent.com/MaybeS/ITE3068/gh-pages/_data/topo.json
 data_acc: https://raw.githubusercontent.com/MaybeS/ITE3068/gh-pages/_data/2016_accident_by_states.csv
 ---
@@ -113,7 +114,7 @@ function draw(type) {
         .range(d3.range(9).map(function(i) { return "p" + i; }));
 
     queue()
-        .defer(d3.json, "{{ page.data_topo }}")
+        .defer(d3.json, "{{ page.data_topo }}?token={{ page.data_token }}")
         .defer(d3.csv, "{{ page.data_acc }}", function(d) {
             popByName.set(d.name, +d[type]);
         })
